@@ -21,7 +21,13 @@ router.post('/create', authMiddleware, async (req, res)=>{
 router.get('/show', async (req, res)=>{
     const { page = 1 } = req.query
 
-    const news = await News.paginate({}, { page, limit:10 }) // buscando todas as noticias
+    const news = await News.paginate({}, {
+        page,
+        limit: 10,
+        sort: {
+            createAt: -1        //  Sort by Date Added DESC
+        }
+    })                          //  buscando todas as noticias
     
     const nova = await Promise.all(news.docs.map(async (teste) => {//    acha o autor de cada postagem e anexa ao json
         const {name} = await User.findOne(teste.userId)
