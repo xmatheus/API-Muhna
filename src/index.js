@@ -17,6 +17,6 @@ require('./controllers/userController')(app);
 require('./controllers/newsController')(app);
 require('./controllers/imageControlle')(app);
 
-const porta = process.env.PORT || 3000 || 3002 
+const porta = process.env.PORT || 3000 
 console.log("[D]Porta: "+porta)
 app.listen(porta)
