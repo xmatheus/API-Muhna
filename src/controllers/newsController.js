@@ -2,6 +2,10 @@ const express = require('express')
 const User = require('../models/User')
 const News = require ('../models/news')
 const authMiddleware = require('../middleware/auth')
+const newsAuthQuery = require('../middleware/newsAuthQuery')
+const Grid = require('gridfs-stream')
+const mongoose = require('mongoose')
+const File = require('../models/file')
 const router = express.Router()
 
 
@@ -43,5 +47,30 @@ router.get('/show', async (req, res)=>{
     return res.status(200).json(news)
     
 })
+
+router.post('/remove', authMiddleware,newsAuthQuery,async (req, res)=>{
+    const gfs = Grid(mongoose.connection.db, mongoose.mongo)
+    // gfs.collection('uploads')
+
+    const newsid = req.newsid
+    
+    await News.deleteMany({_id:newsid})
+    const mfiles = await File.find({newsid:newsid})
+    await File.deleteMany({newsid:newsid})
+    
+    const fileid = mfiles.map((t) => {
+        return t.fileid
+    })
+
+    fileid.map(
+        async (t) => {
+            await gfs.remove({ _id: t, root: 'uploads' })
+        })
+    res.status(200).send()
+
+    
+    
+})
+
 
 module.exports = app => app.use('/news',router)

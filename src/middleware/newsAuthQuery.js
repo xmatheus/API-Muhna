@@ -2,7 +2,7 @@ const news = require("../models/news")
 const mongoose = require('mongoose')
 
 module.exports =  (req, res, next) => {
-    const {newsid} = req.headers
+    const {newsid} = req.query
     if(!newsid){
         res.status(400).send({erro:'news ID required'})
     }
