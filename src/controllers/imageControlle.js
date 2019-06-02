@@ -56,7 +56,7 @@ router.get('/', (req, res) => {
     });
 });
 
-router.get('/name', (req, res) => {
+router.get('/name', (req, res) => {         //retorna apenas as imagens com formato png e jpeg
   const {filename} = req.query
   console.log(filename)
   const gfs = Grid(mongoose.connection.db, mongoose.mongo)
@@ -86,7 +86,6 @@ router.get('/name', (req, res) => {
 router.get('/news', async (req, res) => {
   
   const {newsid} = req.query
-  console.log(newsid)
 
   const files = await File.find({newsid})
   const names = files.map((file) =>{
@@ -95,8 +94,28 @@ router.get('/news', async (req, res) => {
   })
   // console.log(filename)
   res.json(names)
+});
 
+router.get('/all', async (req, res) => {
   
+	const files = await File.find({})
+	const {newsid, fileid} = files
+	// console.log(filename)
+	res.json(newsid,fileid)
+  });
+
+router.delete('/', async (req, res) => {
+
+	const { imageid } = req.query
+	const gfs = Grid(mongoose.connection.db, mongoose.mongo)
+  
+  try {
+    await File.deleteMany({ fileid: imageid })
+    await gfs.remove({ _id: imageid, root: 'uploads' })
+  } catch (error) {
+    res.status(400).send(error)
+  }
+	res.status(200).send()
 });
 
 
