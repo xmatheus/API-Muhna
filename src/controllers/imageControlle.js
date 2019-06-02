@@ -1,6 +1,7 @@
 const express = require('express')
 const authMiddleware = require('../middleware/auth')
 const newsMiddleware = require('../middleware/newsauth')
+const newsMiddlewareQuery = require('../middleware/newsAuthQuery')
 const upload = require('../models/upload').single('file')
 const Grid = require('gridfs-stream')
 const mongoose = require('mongoose')
@@ -83,18 +84,13 @@ router.get('/name', (req, res) => {         //retorna apenas as imagens com form
   });
 });
 
-router.get('/news', async (req, res) => {
+router.get('/news', authMiddleware,newsMiddlewareQuery,async (req, res) => {
   
   const {newsid} = req.query
 
   const files = await File.find({newsid})
-  const names = files.map((file) =>{
-    const { filename, originalname } = file
-    const image = {filename,originalname}
-    return image
-  })
-  // console.log(filename)
-  res.json(names)
+
+  res.json(files)
 });
 
 router.get('/all', async (req, res) => {
