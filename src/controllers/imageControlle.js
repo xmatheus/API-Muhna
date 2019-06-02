@@ -89,8 +89,9 @@ router.get('/news', async (req, res) => {
 
   const files = await File.find({newsid})
   const names = files.map((file) =>{
-    const { filename } = file
-    return filename
+    const { filename, originalname } = file
+    const image = {filename,originalname}
+    return image
   })
   // console.log(filename)
   res.json(names)
