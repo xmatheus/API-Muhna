@@ -84,7 +84,7 @@ router.get('/name', (req, res) => {         //retorna apenas as imagens com form
   });
 });
 
-router.get('/news', authMiddleware,newsMiddlewareQuery,async (req, res) => {
+router.get('/news',newsMiddlewareQuery,async (req, res) => {
   
   const {newsid} = req.query
 
