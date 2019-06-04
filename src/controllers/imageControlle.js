@@ -40,7 +40,6 @@ router.post('/',authMiddleware, newsMiddleware,(req,res)=>{
 
    
 // })
-
 router.get('/', (req, res) => {
     const gfs = Grid(mongoose.connection.db, mongoose.mongo)
     gfs.collection('uploads')
@@ -96,9 +95,7 @@ router.get('/news',newsMiddlewareQuery,async (req, res) => {
 router.get('/all', async (req, res) => {
   
 	const files = await File.find({})
-	const {newsid, fileid} = files
-	// console.log(filename)
-	res.json(newsid,fileid)
+	res.status(200).send(files)
   });
 
 router.delete('/', async (req, res) => {
