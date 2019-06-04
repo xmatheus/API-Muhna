@@ -92,7 +92,7 @@ router.get('/news',newsMiddlewareQuery,async (req, res) => {
   res.json(files)
 });
 
-router.get('/all', async (req, res) => {
+router.get('/all', authMiddleware,async (req, res) => {
   
 	const files = await File.find({})
 	res.status(200).send(files)
