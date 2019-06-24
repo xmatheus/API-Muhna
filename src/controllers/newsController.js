@@ -22,6 +22,21 @@ router.post('/create', authMiddleware, async (req, res)=>{
     }
 })
 
+router.get('/', async (req, res)=>{
+    const { newsid } = req.query
+
+    if(newsid){
+        const nNews = await News.findById({_id:newsid})
+        return res.status(200).send(nNews)
+    }
+    else{
+        return res.status(400).send()
+    }
+    
+    
+    
+})
+
 router.get('/show', async (req, res)=>{
     const { page = 1 } = req.query
 
