@@ -27,7 +27,7 @@ router.get('/', async (req, res)=>{
 
     if(newsid){
         const nNews = await News.findById({_id:newsid})
-        return res.status(200).send(nNews)
+        return res.status(200).send({docs:nNews})
     }
     else{
         return res.status(400).send()
