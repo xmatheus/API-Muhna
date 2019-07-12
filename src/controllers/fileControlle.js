@@ -119,12 +119,12 @@ router.get('/all', authMiddleware, async (req, res) => {   //mostra todas as ima
 
 router.delete('/', authMiddleware,async (req, res) => {
 
-	const { imageid } = req.query
+	const { idfile } = req.query
 	const gfs = Grid(mongoose.connection.db, mongoose.mongo)
 
 	try {
-		await File.deleteMany({ fileid: imageid })
-		await gfs.remove({ _id: imageid, root: 'uploads' })
+		await File.deleteMany({ fileid: idfile })
+		await gfs.remove({ _id: idfile, root: 'uploads' })
 	} catch (error) {
 		res.status(400).send(error)
 	}
