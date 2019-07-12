@@ -17,10 +17,10 @@ router.post('/',authMiddleware, newsMiddleware,(req,res)=>{		//upload de midia
         if (err){
             return res.status(400).send({error:err.message})
         }else{
-            const {originalname,mimetype,filename,size,uploadDate,id} = req.file
+            const {originalname,contentType,filename,size,uploadDate,id} = req.file
             
             
-            await File.create({originalname,mimetype,filename,size,uploadDate,newsid:req.newsid,fileid:id})		//File eh o que linka o arquivo a notica
+            await File.create({originalname,contentType,filename,size,uploadDate,newsid:req.newsid,fileid:id})		//File eh o que linka o arquivo a notica
             res.status(200).json({
                 file: req.file
             })
@@ -29,7 +29,7 @@ router.post('/',authMiddleware, newsMiddleware,(req,res)=>{		//upload de midia
     
 })
 
-router.get('/', authMiddleware, (req, res) => {		//mostra todas as imagens
+router.get('/', authMiddleware, (req, res) => {		//mostra todos os arquivos
     const gfs = Grid(mongoose.connection.db, mongoose.mongo)
     gfs.collection('uploads')
     gfs.files.find({}).toArray((err, files) => {
@@ -60,7 +60,7 @@ router.get('/image', (req, res) => {         //retorna apenas imagens contendo o
 		}
 
 		// Check if image
-		if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+		if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {		// verificar se eh mimetype ou contenttype
 			// Read output to browser
 			const readstream = gfs.createReadStream(file.filename);
 			readstream.pipe(res);
@@ -72,7 +72,7 @@ router.get('/image', (req, res) => {         //retorna apenas imagens contendo o
 	});
 });
 
-router.get('/video', (req, res) => {         //retorna apenas imagens contendo o filename passado como query
+router.get('/video', (req, res) => {         //retorna apenas os videos contendo o filename passado como query
 	const { filename } = req.query
 	
 	console.log(filename)
@@ -88,7 +88,7 @@ router.get('/video', (req, res) => {         //retorna apenas imagens contendo o
 		}
 
 		// Check if video
-		if (file.contentType === 'image/gif' || file.contentType === 'video/mp4' || file.contentType === 'video/mkv') {
+		if (file.contentType === 'image/gif' || file.contentType === 'video/mp4' || file.contentType === 'video/mkv') {		// verificar se eh mimetype ou contenttype
 			
 			const readstream = gfs.createReadStream(file.filename);
 			readstream.pipe(res);
@@ -102,11 +102,25 @@ router.get('/video', (req, res) => {         //retorna apenas imagens contendo o
 
 
 
-router.get('/news', newsMiddlewareQuery, async (req, res) => {    // mostra as imagens rerente a noticia
+router.get('/image/news', newsMiddlewareQuery, async (req, res) => {    // mostra as imagens rerente a noticia
 
 	const { newsid } = req.query
 
-	const files = await File.find({ newsid })
+	const old_files = await File.find({ newsid })
+	
+	const files = {
+		image:[],
+		video:[]
+	}
+
+	old_files.forEach( ( file ) => {
+		if( file.contentType === 'image/gif' || file.contentType === 'video/mp4' || file.contentType === 'video/mkv' ){
+			files.video.push(file)
+		}
+		else if( file.contentType === 'image/jpeg' || file.contentType === 'image/png' ){
+			files.image.push(file)
+		}
+	});
 
 	res.json(files)
 });

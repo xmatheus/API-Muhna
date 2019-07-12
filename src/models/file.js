@@ -6,7 +6,7 @@ const FileSchema = new mongoose.Schema({
         type: String,
         require:true
     },
-    mimetype:{
+    contentType:{
         type: String,
         require:true,
  
