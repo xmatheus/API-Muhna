@@ -72,9 +72,35 @@ router.get('/image', (req, res) => {         //retorna apenas imagens contendo o
 	});
 });
 
-"image/gif",
-            "video/mp4",
-            "video/mkv"
+router.get('/video', (req, res) => {         //retorna apenas imagens contendo o filename passado como query
+	const { filename } = req.query
+	
+	console.log(filename)
+	const gfs = Grid(mongoose.connection.db, mongoose.mongo)
+	gfs.collection('uploads')
+
+	gfs.files.findOne({ filename }, (err, file) => {
+		// Check if file
+		if (!file || file.length === 0) {
+			return res.status(404).json({
+				err: 'No file exists'
+			});
+		}
+
+		// Check if video
+		if (file.contentType === 'image/gif' || file.contentType === 'video/mp4' || file.contentType === 'video/mkv') {
+			
+			const readstream = gfs.createReadStream(file.filename);
+			readstream.pipe(res);
+		} else {
+			res.status(404).json({
+				err: 'Not an video'
+			});
+		}
+	});
+});
+
+
 
 router.get('/news', newsMiddlewareQuery, async (req, res) => {    // mostra as imagens rerente a noticia
 
