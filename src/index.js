@@ -15,9 +15,10 @@ app.use(cors())
 require('./controllers/authController')(app);
 require('./controllers/userController')(app);
 require('./controllers/newsController')(app);
-require('./controllers/imageControlle')(app);
+require('./controllers/fileControlle')(app);
 require('./controllers/onePagController')(app);
 
 const porta = process.env.PORT || 3000 
 console.log("[D]Porta: "+porta)
 app.listen(porta)
+
