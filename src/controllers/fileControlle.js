@@ -102,7 +102,7 @@ router.get('/video', (req, res) => {         //retorna apenas os videos contendo
 
 
 
-router.get('/image/news', newsMiddlewareQuery, async (req, res) => {    // mostra as imagens rerente a noticia
+router.get('/news', newsMiddlewareQuery, async (req, res) => {    // mostra as imagens rerente a noticia
 
 	const { newsid } = req.query
 
