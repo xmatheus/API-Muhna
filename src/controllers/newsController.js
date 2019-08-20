@@ -82,9 +82,6 @@ router.post('/remove', authMiddleware,newsAuthQuery,async (req, res)=>{
             await gfs.remove({ _id: t, root: 'uploads' })
         })
     res.status(200).send()
-
-    
-    
 })
 
 
