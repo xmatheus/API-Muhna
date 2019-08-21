@@ -100,27 +100,48 @@ router.get("/video", (req, res) => {
 	gfs.collection("uploads");
 
 	gfs.files.findOne({ filename }, (err, file) => {
-		// Check if file
-		if (!file || file.length === 0) {
-			return res.status(404).json({
-				err: "No file exists"
+		if (err) {
+			return res.status(400).send({
+				err
+			});
+		}
+		if (!file) {
+			return res.status(404).send({
+				err: "Arquivo nao encontrado"
 			});
 		}
 
-		// Check if video
-		if (
-			file.contentType === "image/gif" ||
-			file.contentType === "video/mp4" ||
-			file.contentType === "video/mkv"
-		) {
-			// verificar se eh mimetype ou contenttype
+		if (req.headers["range"]) {
+			var parts = req.headers["range"].replace(/bytes=/, "").split("-");
+			var partialstart = parts[0];
+			var partialend = parts[1];
 
-			const readstream = gfs.createReadStream(file.filename);
-			readstream.pipe(res);
-		} else {
-			res.status(404).json({
-				err: "Not an video"
+			var start = parseInt(partialstart, 10);
+			var end = partialend ? parseInt(partialend, 10) : file.length - 1;
+			var chunksize = end - start + 1;
+
+			res.writeHead(206, {
+				"Accept-Ranges": "bytes",
+				"Content-Length": chunksize,
+				"Content-Range":
+					"bytes " + start + "-" + end + "/" + file.length,
+				"Content-Type": file.contentType
 			});
+
+			gfs.createReadStream({
+				filename: file.filename,
+				range: {
+					startPos: start,
+					endPos: end
+				}
+			}).pipe(res);
+		} else {
+			res.header("Content-Length", file.length);
+			res.header("Content-Type", file.contentType);
+
+			gfs.createReadStream({
+				filename: file.filename
+			}).pipe(res);
 		}
 	});
 });
