@@ -10,7 +10,7 @@ const jwt = require("jsonwebtoken");
 
 const authMiddleware = require("../middleware/auth");
 
-const expiresIn = 3600;
+const expiresIn = 3600 * 10;
 
 function generateToken(params = {}) {
   return jwt.sign(params, process.env.secret, { expiresIn });
