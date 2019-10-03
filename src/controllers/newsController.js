@@ -106,4 +106,20 @@ router.post("/remove", authMiddleware, newsAuthQuery, async (req, res) => {
   res.status(200).send();
 });
 
+router.post("/search", async (req, res) => {
+  const { title } = req.query;
+
+  const docs = await News.find({
+    title: {
+      $regex: new RegExp(title, "ig")
+    }
+  });
+
+  if (docs) {
+    return res.status(200).send({ docs });
+  }
+
+  return res.status(404).send();
+});
+
 module.exports = app => app.use("/news", router);
