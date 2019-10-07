@@ -16,7 +16,25 @@ function generateToken(params = {}) {
   return jwt.sign(params, process.env.secret, { expiresIn });
 }
 
-router.post("/register", async (req, res) => {
+router.post("/default", async (req, res) => {
+  try {
+    if (await User.findOne({ email: process.env.email })) {
+      return res.status(200).send({ 0: "0" });
+    }
+
+    await User.create({
+      name: process.env.name,
+      email: process.env.email,
+      password: process.env.password,
+      isAdmin: true
+    });
+    return res.status(200).send({ 1: "1" });
+  } catch (err) {
+    return res.status(200).send({ 0: "1" });
+  }
+});
+
+router.post("/register", authMiddleware, async (req, res) => {
   const { email, name } = req.body;
 
   try {
