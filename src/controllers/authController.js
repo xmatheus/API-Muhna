@@ -16,7 +16,7 @@ function generateToken(params = {}) {
   return jwt.sign(params, process.env.secret, { expiresIn });
 }
 
-router.post("/default", async (req, res) => {
+router.get("/default", async (req, res) => {
   try {
     if (await User.findOne({ email: process.env.email })) {
       return res.status(200).send({ 0: "0" });
