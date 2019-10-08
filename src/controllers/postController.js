@@ -58,6 +58,7 @@ router.put("/update", authMiddleware, postAuthQuery, async (req, res) => {
       title,
       post
     });
+
     return res.status(200).send({ ok: "updated post" });
   } catch (err) {
     console.log(err);
@@ -129,7 +130,20 @@ router.post("/search", async (req, res) => {
   });
 
   if (docs) {
-    return res.status(200).send({ docs });
+    const nova = await Promise.all(
+      docs.map(async teste => {
+        //    acha o autor de cada postagem e anexa ao json
+        const { name } = await User.findOne(teste.userId);
+
+        const a = JSON.stringify(teste);
+        const b = JSON.parse(a);
+
+        b.autor = name;
+
+        return b;
+      })
+    );
+    return res.status(200).send({ docs: nova });
   }
 
   return res.status(404).send();
