@@ -51,13 +51,15 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/show", async (req, res) => {
-  const { page = 1 } = req.query;
+  const { page = 1, limite = 10 } = req.query;
+
+  const limit = parseInt(limite);
 
   const nPost = await Post.paginate(
     {},
     {
       page,
-      limit: 10,
+      limit,
       sort: {
         createAt: -1 //  Sort by Date Added DESC
       }
