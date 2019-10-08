@@ -50,6 +50,21 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.put("/update", authMiddleware, postAuthQuery, async (req, res) => {
+  try {
+    const { title, post } = req.body;
+
+    const nova = await Post.findByIdAndUpdate(req.postid, {
+      title,
+      post
+    });
+    return res.status(200).send({ ok: "updated post" });
+  } catch (err) {
+    console.log(err);
+    return res.status(400).send({ error: "update news failed" });
+  }
+});
+
 router.get("/show", async (req, res) => {
   const { page = 1, limite = 10 } = req.query;
 
