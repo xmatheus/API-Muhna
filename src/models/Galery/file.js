@@ -1,3 +1,4 @@
+const mongoosePaginate = require('mongoose-paginate');
 const mongoose = require('../../database');
 
 const FileSchema = new mongoose.Schema({
@@ -7,10 +8,6 @@ const FileSchema = new mongoose.Schema({
     },
     contentType: {
         type: String,
-        require: true,
-    },
-    newsid: {
-        type: mongoose.Schema.Types.ObjectId,
         require: true,
     },
     fileid: {
@@ -30,7 +27,7 @@ const FileSchema = new mongoose.Schema({
         require: true,
     },
 });
+FileSchema.plugin(mongoosePaginate);
+const Galery = mongoose.model('Galery', FileSchema);
 
-const File = mongoose.model('File', FileSchema);
-
-module.exports = File;
+module.exports = Galery;
