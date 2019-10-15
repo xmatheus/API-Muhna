@@ -1,3 +1,4 @@
+/* eslint-disable consistent-return */
 const express = require('express');
 const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
@@ -61,7 +62,6 @@ router.get('/', authMiddleware, (req, res) => {
 router.get('/image', (req, res) => {
     // retorna apenas imagens contendo o filename passado como query
     const { filename } = req.query;
-    console.log(filename);
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
     gfs.collection('uploadPost');
 
@@ -96,7 +96,6 @@ router.get('/video', (req, res) => {
     // retorna apenas os videos contendo o filename passado como query
     const { filename } = req.query;
 
-    console.log(filename);
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
     gfs.collection('uploadPost');
 
@@ -124,7 +123,7 @@ router.get('/video', (req, res) => {
             res.writeHead(206, {
                 'Accept-Ranges': 'bytes',
                 'Content-Length': chunksize,
-                'Content-Range': 'bytes ' + start + '-' + end + '/' + file.length,
+                'Content-Range': `bytes ${start}-${end}/${file.length}`,
                 'Content-Type': file.contentType,
             });
 
@@ -155,14 +154,14 @@ router.get('/post', postMiddlewareQuery, async (req, res) => {
 
     const { postid } = req.query;
 
-    const old_files = await File.find({ postid });
+    const oldFiles = await File.find({ postid });
 
     const files = {
         image: [],
         video: [],
     };
 
-    old_files.forEach((file) => {
+    oldFiles.forEach((file) => {
         if (
             file.contentType === 'image/gif'
       || file.contentType === 'video/mp4'

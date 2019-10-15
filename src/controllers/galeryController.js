@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 /* eslint-disable consistent-return */
 const express = require('express');
 const Grid = require('gridfs-stream');

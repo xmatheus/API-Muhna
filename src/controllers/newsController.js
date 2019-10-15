@@ -1,3 +1,4 @@
+/* eslint-disable radix */
 const express = require('express');
 const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
@@ -22,7 +23,6 @@ router.post('/create', authMiddleware, async (req, res) => {
         });
         return res.status(200).send(nova);
     } catch (err) {
-        console.log(err);
         return res.status(400).send({ error: 'create news failed' });
     }
 });
@@ -38,7 +38,6 @@ router.put('/update', authMiddleware, newsAuthQuery, async (req, res) => {
         });
         return res.status(200).send({ ok: 'updated news' });
     } catch (err) {
-        console.log(err);
         return res.status(400).send({ error: 'update news failed' });
     }
 });
