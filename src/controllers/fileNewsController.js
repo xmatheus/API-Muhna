@@ -156,6 +156,7 @@ router.get('/news', newsMiddlewareQuery, async (req, res) => {
     const files = {
         image: [],
         video: [],
+        link: [],
     };
 
     oldFiles.forEach((file) => {
@@ -170,6 +171,8 @@ router.get('/news', newsMiddlewareQuery, async (req, res) => {
       || file.contentType === 'image/png'
         ) {
             files.image.push(file);
+        } else if (file.contentType === 'link') {
+            files.link.push(file);
         }
     });
 
@@ -194,6 +197,20 @@ router.delete('/', authMiddleware, async (req, res) => {
         res.status(400).send(error);
     }
     res.status(200).send();
+});
+
+router.post('/link', authMiddleware, newsMiddlewareQuery, async (req, res) => {
+    const { url } = req.body;
+
+    const file = await File.create({
+        contentType: 'link',
+        newsid: req.newsid,
+        url,
+    }); // File eh o que linka o arquivo a notica
+
+    res.status(200).json({
+        file,
+    });
 });
 
 module.exports = (app) => app.use('/fileNews', router);
