@@ -29,6 +29,9 @@ const FileSchema = new mongoose.Schema({
         type: Date,
         require: true,
     },
+    url: {
+        type: String,
+    },
 });
 
 const File = mongoose.model('File', FileSchema);
