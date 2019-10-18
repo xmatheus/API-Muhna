@@ -29,7 +29,7 @@ const FileSchema = new mongoose.Schema({
         type: Date,
         require: true,
     },
-    url: {
+    link: {
         type: String,
     },
 });

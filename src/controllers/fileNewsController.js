@@ -200,12 +200,12 @@ router.delete('/', authMiddleware, async (req, res) => {
 });
 
 router.post('/link', authMiddleware, newsMiddlewareQuery, async (req, res) => {
-    const { url } = req.body;
+    const { link } = req.body;
 
     const file = await File.create({
         contentType: 'link',
         newsid: req.newsid,
-        url,
+        link,
     }); // File eh o que linka o arquivo a notica
 
     res.status(200).json({

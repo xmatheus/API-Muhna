@@ -159,6 +159,7 @@ router.get('/post', postMiddlewareQuery, async (req, res) => {
     const files = {
         image: [],
         video: [],
+        link: [],
     };
 
     oldFiles.forEach((file) => {
@@ -173,6 +174,8 @@ router.get('/post', postMiddlewareQuery, async (req, res) => {
       || file.contentType === 'image/png'
         ) {
             files.image.push(file);
+        } else if (file.contentType === 'link') {
+            files.link.push(file);
         }
     });
 
@@ -197,6 +200,20 @@ router.delete('/', authMiddleware, async (req, res) => {
         res.status(400).send(error);
     }
     res.status(200).send();
+});
+
+router.post('/link', authMiddleware, postMiddlewareQuery, async (req, res) => {
+    const { link } = req.body;
+
+    const file = await File.create({
+        contentType: 'link',
+        postid: req.postid,
+        link,
+    }); // File eh o que linka o arquivo a postagem
+
+    res.status(200).json({
+        file,
+    });
 });
 
 module.exports = (app) => app.use('/filePost', router);
