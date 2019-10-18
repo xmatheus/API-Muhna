@@ -187,16 +187,22 @@ router.get('/all', authMiddleware, async (req, res) => {
 });
 
 router.delete('/', authMiddleware, async (req, res) => {
-    const { idfile } = req.query;
+    const { idfile, id } = req.query;
+
+    if (id !== undefined && id !== null) {
+        await File.deleteOne({ _id: id }); // o link nao tem fileId, essa eh a unica forma de remove ele
+        return res.status(200).send();
+    }
+
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
 
     try {
         await File.deleteMany({ fileid: idfile });
         await gfs.remove({ _id: idfile, root: 'uploads' });
     } catch (error) {
-        res.status(400).send(error);
+        return res.status(400).send(error);
     }
-    res.status(200).send();
+    return res.status(200).send();
 });
 
 router.post('/link', authMiddleware, newsMiddlewareQuery, async (req, res) => {
