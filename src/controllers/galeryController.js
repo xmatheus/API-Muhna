@@ -49,7 +49,7 @@ router.get('/', authMiddleware, async (req, res) => {
             page,
             limit,
             sort: {
-                createAt: -1, //  Sort by Date Added DESC
+                uploadDate: -1, //  Sort by Date Added DESC
             },
         },
     );
