@@ -18,6 +18,7 @@
     "eslint-plugin-import": "^2.18.2",
     "express": "^4.16.4",
     "express-list-endpoints": "^4.0.1",
+    "fs": "^0.0.1-security",
     "gridfs-stream": "^1.1.1",
     "heroku": "^7.29.0",
     "jsonwebtoken": "^8.5.1",
@@ -27,7 +28,10 @@
     "morgan": "^1.9.1",
     "multer": "^1.4.1",
     "multer-gridfs-storage": "^3.2.3",
-    "nodenv": "^0.1.0"
+    "nodemailer": "^6.3.1",
+    "nodemailer-express-handlebars": "^3.1.0",
+    "nodenv": "^0.1.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "eslint": "^6.2.1",

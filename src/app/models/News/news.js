@@ -21,6 +21,10 @@ const NewsSchema = new mongoose.Schema({
         ref: user,
         require: true,
     },
+    autor: {
+        type: String,
+        require: true,
+    },
     createAt: {
         type: Date,
         default: Date.now,

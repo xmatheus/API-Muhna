@@ -13,7 +13,15 @@ const router = express.Router();
 router.post('/create', authMiddleware, async (req, res) => {
     try {
         const { title, post } = req.body;
-        const nova = await Post.create({ title, post, userId: req.userId });
+
+        const user = await User.findById(req.userId);
+
+        const nova = await Post.create({
+            title,
+            post,
+            userId: req.userId,
+            autor: user.name,
+        });
         return res.status(200).send(nova);
     } catch (err) {
         console.log(err);
@@ -53,7 +61,7 @@ router.put('/update', authMiddleware, postAuthQuery, async (req, res) => {
     try {
         const { title, post } = req.body;
 
-        const nova = await Post.findByIdAndUpdate(req.postid, {
+        await Post.findByIdAndUpdate(req.postid, {
             title,
             post,
         });
@@ -81,20 +89,6 @@ router.get('/show', async (req, res) => {
         },
     ); //  buscando todas as noticias
 
-    const nova = await Promise.all(
-        nPost.docs.map(async (teste) => {
-            //    acha o autor de cada postagem e anexa ao json
-            const { name } = await User.findOne(teste.userId);
-
-            const a = JSON.stringify(teste);
-            const b = JSON.parse(a);
-
-            b.autor = name;
-
-            return b;
-        }),
-    );
-    nPost.docs = nova;
     return res.status(200).json(nPost);
 });
 

@@ -15,11 +15,13 @@ router.post('/create', authMiddleware, async (req, res) => {
     try {
         const { title, resume, news } = req.body;
 
+        const user = await User.findById(req.userId);
         const nova = await News.create({
             title,
             resume,
             news,
             userId: req.userId,
+            autor: user.name,
         });
         return res.status(200).send(nova);
     } catch (err) {
@@ -67,20 +69,6 @@ router.get('/show', async (req, res) => {
         },
     ); //  buscando todas as noticias
 
-    const nova = await Promise.all(
-        news.docs.map(async (teste) => {
-            //    acha o autor de cada postagem e anexa ao json
-            const { name } = await User.findOne(teste.userId);
-
-            const a = JSON.stringify(teste);
-            const b = JSON.parse(a);
-
-            b.autor = name;
-
-            return b;
-        }),
-    );
-    news.docs = nova;
     return res.status(200).json(news);
 });
 

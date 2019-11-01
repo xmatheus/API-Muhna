@@ -77,7 +77,7 @@ router.get('/image', (req, res) => {
     gfs.collection('galeria');
 
     gfs.files.findOne({ filename }, (err, file) => {
-    // Check if file
+        // Check if file
         if (!file || file.length === 0) {
             return res.status(404).json({
                 err: 'No file exists',
@@ -87,9 +87,9 @@ router.get('/image', (req, res) => {
         // Check if image
         if (
             file.contentType === 'image/jpeg'
-      || file.contentType === 'image/png'
-      || file.contentType === 'image/pjpeg'
-      || file.contentType === 'image/gif'
+			|| file.contentType === 'image/png'
+			|| file.contentType === 'image/pjpeg'
+			|| file.contentType === 'image/gif'
         ) {
             // verificar se o contenttype
             // Read output to browser

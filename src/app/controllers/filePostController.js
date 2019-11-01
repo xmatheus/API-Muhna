@@ -4,13 +4,16 @@ const Grid = require('gridfs-stream');
 const mongoose = require('mongoose');
 
 const authMiddleware = require('../middleware/auth');
-const newsMiddlewareQuery = require('../middleware/newsAuthQuery');
-const File = require('../models/News/file');
-const upload = require('../models/News/upload').single('file');
+const postMiddlewareQuery = require('../middleware/postAuthQuery');
+const File = require('../models/Post/filePost');
+const upload = require('../models/Post/uploadPost').single('file');
 
 const router = express.Router();
 
-router.post('/', authMiddleware, newsMiddlewareQuery, (req, res) => {
+router.post('/', authMiddleware, postMiddlewareQuery, (req, res) => {
+    // upload de midia
+    // req.file.postid =  req.postid
+    // console.log(req)
     upload(req, res, async (err) => {
         if (err) {
             return res.status(400).send({ error: err.message });
@@ -30,7 +33,7 @@ router.post('/', authMiddleware, newsMiddlewareQuery, (req, res) => {
             filename,
             size,
             uploadDate,
-            newsid: req.newsid,
+            postid: req.postid,
             fileid: id,
         }); // File eh o que linka o arquivo a notica
         res.status(200).json({
@@ -42,9 +45,9 @@ router.post('/', authMiddleware, newsMiddlewareQuery, (req, res) => {
 router.get('/', authMiddleware, (req, res) => {
     // mostra todos os arquivos
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
-    gfs.collection('uploads');
+    gfs.collection('uploadPost');
     gfs.files.find({}).toArray((err, files) => {
-    // Check if files
+        // Check if files
         if (!files || files.length === 0) {
             return res.status(404).json({
                 err: 'No files exist',
@@ -60,10 +63,10 @@ router.get('/image', (req, res) => {
     // retorna apenas imagens contendo o filename passado como query
     const { filename } = req.query;
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
-    gfs.collection('uploads');
+    gfs.collection('uploadPost');
 
     gfs.files.findOne({ filename }, (err, file) => {
-    // Check if file
+        // Check if file
         if (!file || file.length === 0) {
             return res.status(404).json({
                 err: 'No file exists',
@@ -73,9 +76,9 @@ router.get('/image', (req, res) => {
         // Check if image
         if (
             file.contentType === 'image/jpeg'
-      || file.contentType === 'image/png'
-      || file.contentType === 'image/pjpeg'
-      || file.contentType === 'image/gif'
+			|| file.contentType === 'image/png'
+			|| file.contentType === 'image/pjpeg'
+			|| file.contentType === 'image/gif'
         ) {
             // verificar se eh mimetype ou contenttype
             // Read output to browser
@@ -94,7 +97,7 @@ router.get('/video', (req, res) => {
     const { filename } = req.query;
 
     const gfs = Grid(mongoose.connection.db, mongoose.mongo);
-    gfs.collection('uploads');
+    gfs.collection('uploadPost');
 
     gfs.files.findOne({ filename }, (err, file) => {
         if (err) {
@@ -104,7 +107,7 @@ router.get('/video', (req, res) => {
         }
         if (!file) {
             return res.status(404).send({
-                err: 'Arquivo nao encontrado',
+                err: 'No se encontró el registro especificado.',
             });
         }
 
@@ -124,34 +127,30 @@ router.get('/video', (req, res) => {
                 'Content-Type': file.contentType,
             });
 
-            gfs
-                .createReadStream({
-                    filename: file.filename,
-                    range: {
-                        startPos: start,
-                        endPos: end,
-                    },
-                })
-                .pipe(res);
+            gfs.createReadStream({
+                filename: file.filename,
+                range: {
+                    startPos: start,
+                    endPos: end,
+                },
+            }).pipe(res);
         } else {
             res.header('Content-Length', file.length);
             res.header('Content-Type', file.contentType);
 
-            gfs
-                .createReadStream({
-                    filename: file.filename,
-                })
-                .pipe(res);
+            gfs.createReadStream({
+                filename: file.filename,
+            }).pipe(res);
         }
     });
 });
 
-router.get('/news', newsMiddlewareQuery, async (req, res) => {
+router.get('/post', postMiddlewareQuery, async (req, res) => {
     // mostra as imagens rerente a noticia
 
-    const { newsid } = req.query;
+    const { postid } = req.query;
 
-    const oldFiles = await File.find({ newsid });
+    const oldFiles = await File.find({ postid });
 
     const files = {
         image: [],
@@ -162,13 +161,13 @@ router.get('/news', newsMiddlewareQuery, async (req, res) => {
     oldFiles.forEach((file) => {
         if (
             file.contentType === 'image/gif'
-      || file.contentType === 'video/mp4'
-      || file.contentType === 'video/mkv'
+			|| file.contentType === 'video/mp4'
+			|| file.contentType === 'video/mkv'
         ) {
             files.video.push(file);
         } else if (
             file.contentType === 'image/jpeg'
-      || file.contentType === 'image/png'
+			|| file.contentType === 'image/png'
         ) {
             files.image.push(file);
         } else if (file.contentType === 'link') {
@@ -190,7 +189,8 @@ router.delete('/', authMiddleware, async (req, res) => {
     const { idfile, id } = req.query;
 
     if (id !== undefined && id !== null) {
-        await File.deleteOne({ _id: id }); // o link nao tem fileId, essa eh a unica forma de remove ele
+        // o link nao tem fileId, essa eh a unica forma de remover ele
+        await File.deleteOne({ _id: id });
         return res.status(200).send();
     }
 
@@ -198,25 +198,25 @@ router.delete('/', authMiddleware, async (req, res) => {
 
     try {
         await File.deleteMany({ fileid: idfile });
-        await gfs.remove({ _id: idfile, root: 'uploads' });
+        await gfs.remove({ _id: idfile, root: 'uploadPost' });
     } catch (error) {
         return res.status(400).send(error);
     }
     return res.status(200).send();
 });
 
-router.post('/link', authMiddleware, newsMiddlewareQuery, async (req, res) => {
+router.post('/link', authMiddleware, postMiddlewareQuery, async (req, res) => {
     const { link } = req.body;
 
     const file = await File.create({
         contentType: 'link',
-        newsid: req.newsid,
+        postid: req.postid,
         link,
-    }); // File eh o que linka o arquivo a notica
+    }); // File eh o que linka o arquivo a postagem
 
     res.status(200).json({
         file,
     });
 });
 
-module.exports = (app) => app.use('/fileNews', router);
+module.exports = (app) => app.use('/filePost', router);
