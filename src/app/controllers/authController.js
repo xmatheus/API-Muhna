@@ -190,7 +190,7 @@ router.get('/', authMiddleware, async (req, res) => {
         },
     ); //  buscando todas as noticias
 
-    return res.status(200).send({ users });
+    return res.status(200).json(users);
 });
 
 router.delete('/', authMiddleware, async (req, res) => {
