@@ -214,4 +214,20 @@ router.delete('/', authMiddleware, async (req, res) => {
     res.send();
 });
 
+router.post('/search', authMiddleware, async (req, res) => {
+    const { name } = req.query;
+
+    const users = await User.find({
+        name: {
+            $regex: new RegExp(name, 'ig'),
+        },
+    });
+
+    if (users) {
+        return res.status(200).send({ users });
+    }
+
+    return res.status(404).send();
+});
+
 module.exports = (app) => app.use('/auth', router);
