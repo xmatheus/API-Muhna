@@ -172,12 +172,25 @@ router.get('/', authMiddleware, async (req, res) => {
     const userTemp = await User.find({ _id: req.userId });
     const { isAdmin } = userTemp[0];
 
-    // console.log(isAdmin);
     if (!isAdmin) {
         return res.status(401).send({ error: 'Not permission' });
     }
 
-    res.send({ users: await User.find() });
+    const { page = 1, limite = 10 } = req.query;
+
+    const limit = parseInt(limite);
+    const users = await User.paginate(
+        {},
+        {
+            page,
+            limit,
+            sort: {
+                createAt: -1, //  Sort by Date Added DESC
+            },
+        },
+    ); //  buscando todas as noticias
+
+    return res.status(200).send({ users });
 });
 
 router.delete('/', authMiddleware, async (req, res) => {
