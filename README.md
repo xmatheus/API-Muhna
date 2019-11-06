@@ -29,23 +29,7 @@ Essa API foi desenvolvida para facilitar o compartilhamento de informações ent
 * [Mongodb](https://docs.mongodb.com/manual/installation/)
 * [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
 
-
-
-### Instalação
-
-
-```sh
-$ sudo apt update
-$ sudo apt install git
-$ git clone https://github.com/xmatheus/API-Muhna
-$ cd API-Muhna
-$ yarn install
-Em desenvolvimento
-$ yarn dev (inicia o nodemon e permite um 'fast refresh')
-Deixar rodando
-$ yarn start
-
-```
+### .env
 
 É necessário criar um arquivo .env na raiz do projeto com as seguintes váriaveis:
 
@@ -60,6 +44,24 @@ $ yarn start
 | port | 2525(exemplo)  | porta do servidor smtp |
 | user | teste | usuário do servidor SMTP |
 | pass | *********** | senha do usuário do servidor SMTP |
+
+
+### Instalação
+
+
+```sh
+$ sudo apt update
+$ git clone https://github.com/xmatheus/API-Muhna
+$ cd API-Muhna
+$ yarn install
+Em desenvolvimento
+$ yarn dev (inicia o nodemon e permite um 'fast refresh')
+Deixar rodando
+$ yarn start
+
+```
+
+
 
 
 ### Início rápido
