@@ -75,6 +75,11 @@ $ yarn start
 ![treefilesNodeText2](https://user-images.githubusercontent.com/34286800/68332965-0ff14100-00ae-11ea-8c09-c6b20ddaf243.png)
 
 
+### Rotas da API
+
+![rotasAPI](https://user-images.githubusercontent.com/34286800/68334926-e4705580-00b1-11ea-8ff0-596dd4fd93dc.png)
+
+
 [Demonstrativo no heroku](http://muhna-api.herokuapp.com/)
 
 
