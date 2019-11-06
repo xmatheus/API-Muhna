@@ -80,6 +80,10 @@ $ yarn start
 ![rotasAPI](https://user-images.githubusercontent.com/34286800/68334926-e4705580-00b1-11ea-8ff0-596dd4fd93dc.png)
 
 
+### [Insomnia](https://insomnia.rest/download/)
+
+Para visualizar todas as rotas da API e entender melhor: eu recomendo fazer o download do [Insomnia](https://insomnia.rest/download/) e importar esse [backup](https://github.com/xmatheus/API-Muhna/blob/master/Insomnia_2019-11-06-APIMUHNA.json)
+
 [Demonstrativo no heroku](http://muhna-api.herokuapp.com/)
 
 
