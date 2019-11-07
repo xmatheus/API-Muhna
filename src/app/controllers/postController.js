@@ -32,28 +32,12 @@ router.post('/create', authMiddleware, async (req, res) => {
 router.get('/', async (req, res) => {
     const { postid } = req.query;
 
-    if (postid) {
-        const nPost = await Post.findById({ _id: postid });
-        const { userId } = nPost;
+    const nPost = await Post.findById({ _id: postid });
 
-        // console.log(userId);
-        const AlterPost = async () => {
-            //    acha o autor de cada postagem e anexa ao json
-
-            const other = await User.findOne(userId);
-
-            const a = JSON.stringify(nPost);
-            const b = JSON.parse(a);
-
-            b.autor = other.name;
-            console.log(b);
-            return b;
-        };
-
-        const a = await AlterPost();
-
-        return res.status(200).send({ docs: a });
+    if (nPost) {
+        return res.status(200).send({ docs: nPost });
     }
+
     return res.status(400).send({ error: 'post not found' });
 });
 
