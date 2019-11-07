@@ -66,7 +66,7 @@ $ yarn start
 
 ### Início rápido
 
- - Foi usado como base os cursos stater da [Rocketseat](https://rocketseat.com.br/), e também alguns vídeos de Reactjs que estão no [Canal Rocketseat](https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg).
+ - Foi usado como base os cursos stater da [Rocketseat](https://rocketseat.com.br/), e também alguns vídeos de Nodejs que estão no [Canal Rocketseat](https://www.youtube.com/channel/UCSfwM5u0Kce6Cce8_S72olg).
  
  ### Estruturação de pastas
 
@@ -82,7 +82,7 @@ $ yarn start
 
 ### [Insomnia](https://insomnia.rest/download/)
 
-Para visualizar todas as rotas da API e entender melhor: eu recomendo fazer o download do [Insomnia](https://insomnia.rest/download/) e importar esse [backup](https://github.com/xmatheus/API-Muhna/blob/master/Insomnia_2019-11-06-APIMUHNA.json)
+Para visualizar todas as rotas da API e entender melhor: Faça o download do [Insomnia](https://insomnia.rest/download/) e importe esse [backup](https://github.com/xmatheus/API-Muhna/blob/master/Insomnia_2019-11-06-APIMUHNA.json)
 
 [Demonstrativo no heroku](http://muhna-api.herokuapp.com/)
 
