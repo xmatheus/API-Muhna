@@ -52,9 +52,7 @@ router.post('/register', authMiddleware, async (req, res) => {
         // console.log(req.body);
         const user = await User.create(req.body);
         user.password = undefined;
-        return res
-            .status(200)
-            .send({ user, token: generateToken({ id: user._id }) });
+        return res.status(200).send({ user });
     } catch (err) {
         return res.status(400).send({ error: 'Registration fail' });
     }
