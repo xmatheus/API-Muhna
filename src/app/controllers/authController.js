@@ -215,6 +215,13 @@ router.delete('/', authMiddleware, async (req, res) => {
 router.post('/search', authMiddleware, async (req, res) => {
     const { name } = req.query;
 
+    const userTemp = await User.find({ _id: req.userId });
+    const { isAdmin } = userTemp[0];
+
+    if (!isAdmin) {
+        return res.status(401).send({ error: 'Not permission' });
+    }
+
     const users = await User.find({
         name: {
             $regex: new RegExp(name, 'ig'),
