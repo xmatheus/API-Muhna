@@ -1,3 +1,4 @@
+
 ## Projeto Digital do Museu de História Natural do Araguaia
 ### Universidade Federal Do Mato Grosso
 
@@ -76,6 +77,27 @@ $ yarn start
 
 
 ### Rotas da API
+
+| Caminho | métodos | Body | Query |Descrição | precisa estar autenticado | resposta | isAdmin |
+| -- | -- | -- | -- | --| -- | -- | -- |
+| */auth/default* | GET |  | | cria um usuário padrão na API, suas informações dependem do arquivo .env | não | | não|
+| */auth/register* | POST | email | | cria usuário| sim | código 200 e informações do usuário |  não|
+| */auth/authenticate* | POST | email, password | | autentica o usuário| sim| informações do usuário e o token | não|
+| */auth/verify* | POST | | | verifica o token| sim | código 200 ou 401 | não|
+| */auth/forgot_password* | POST | email | | cria o token de reset de senha e delimita um tempo de expiração| não | código 200 ou 400, e um email contendo o token de troca de senha | não|
+| */auth/reset_password* | POST | email, token, password | | troca a senha do usuário| não | código 200 ou 400 | não|
+| */auth* | POST | | | retorna todos os usuários| sim | JSON com todos os usuários | sim |
+| */auth* | DELETE | | userId | delete um usuário| sim | código 401 ou 400 ou 200 | sim |
+| */auth/search* | POST | name|  | busca os usuários com base no nome| sim | json contendo os usuários que tem aquele nome buscado e código 200, ou código 404 | sim |
+| */news/create* | POST | title, resume, news|  |cria uma notícia| sim | json contendo as informações da notícia e o autor  | não |
+| */news/update* | PUT | title, resume, news|  |atualiza as informações de uma notícia| sim | código 200 ou 400  | não |
+| */news* | GET || newsid |retorna a notícia correspondente ao id| não | código 200 e a notícia, ou código 400  | não |
+| */news/show* | GET || page(página a ser buscada, padrão é 1), limite(quantidade de notícias por página, padrão é 10) |retorna todas as notícias| não | código 200 e as notícias, ou código 400  | não |
+| */news/remove* | POST(irei atualizar para DELETE) || newsid |remove uma notícia| sim | código 200 ou código 400  | não |
+| */news/search* | POST || title |busca as notícias com base no título| não | código 200 e  um JSON com as notícias, ou código 404  | não |
+| */news/search* | POST || title |busca as notícias com base no título| não | código 200 e  um JSON com as notícias, ou código 404  | não |
+
+
 
 ![rotasAPI](https://user-images.githubusercontent.com/34286800/68334926-e4705580-00b1-11ea-8ff0-596dd4fd93dc.png)
 
