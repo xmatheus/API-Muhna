@@ -78,7 +78,7 @@ $ yarn start
 
 ### Rotas da API
 
-| Caminho | métodos | Body | Query |Descrição | precisa estar autenticado | resposta | isAdmin |
+| Caminho | métodos | Body | Query |Descrição | precisa estar autenticado | resposta |Precisa ser admin |
 | -- | -- | -- | -- | --| -- | -- | -- |
 | */auth/default* | GET |  | | cria um usuário padrão na API, suas informações dependem do arquivo .env | não | | não|
 | */auth/register* | POST | email | | cria usuário| sim | código 200 e informações do usuário |  não|
@@ -96,6 +96,15 @@ $ yarn start
 | */news/remove* | POST(irei atualizar para DELETE) || newsid |remove uma notícia| sim | código 200 ou código 400  | não |
 | */news/search* | POST || title |busca as notícias com base no título| não | código 200 e  um JSON com as notícias, ou código 404  | não |
 | */news/search* | POST || title |busca as notícias com base no título| não | código 200 e  um JSON com as notícias, ou código 404  | não |
+| */fileNews* | POST ||newsid |envia um arquivo para a notícia(limite de 100mb, é permitido apenas imagens e videos)| sim | código 200 e  um JSON com as informações do arquivo, ou código 400  | não |
+| */fileNews* | GET || |retorna informações sobre todos os arquivos, mas não contém os ids das notícias e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
+| */fileNews/all* | GET || |retorna informações sobre todos os arquivos de notícias e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
+| */fileNews* | DELETE || idfile(remove um arquivo) ou id(remove um link)|deleta um arquivo ou um link do Yt| sim | código 200, ou código 400  | não |
+| */fileNews/image* | GET || filename|busca uma imagem| não | retorna a imagem, ou código 404  | não |
+| */fileNews/video* | GET || filename|busca um video| não | retorna um video, ou código 404 ou 400  | não |
+| */fileNews/news* | GET || newsid|busca todos os arquivos de uma notícia| não | retorna um json contendos as informações dos arquivos , ou código 404 ou 400  | não |
+| */fileNews/link* | POST || newsid|envia um link do YT para a notícia| sim | retorna um json contendos as informações link , ou código 400  | não |
+
 
 
 
