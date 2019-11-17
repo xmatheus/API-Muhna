@@ -78,8 +78,10 @@ $ yarn start
 
 ### Rotas da API
 
+
 | Caminho | métodos | Body | Query |Descrição | precisa estar autenticado | resposta |Precisa ser admin |
 | -- | -- | -- | -- | --| -- | -- | -- |
+| */* | GET || | informações sobre a API| não | JSON contendo uma descrição e contato  | não |
 | */auth/default* | GET |  | | cria um usuário padrão na API, suas informações dependem do arquivo .env | não | | não|
 | */auth/register* | POST | email | | cria usuário| sim | código 200 e informações do usuário |  não|
 | */auth/authenticate* | POST | email, password | | autentica o usuário| sim| informações do usuário e o token | não|
@@ -95,19 +97,38 @@ $ yarn start
 | */news/show* | GET || page(página a ser buscada, padrão é 1), limite(quantidade de notícias por página, padrão é 10) |retorna todas as notícias| não | código 200 e as notícias, ou código 400  | não |
 | */news/remove* | POST(irei atualizar para DELETE) || newsid |remove uma notícia| sim | código 200 ou código 400  | não |
 | */news/search* | POST || title |busca as notícias com base no título| não | código 200 e  um JSON com as notícias, ou código 404  | não |
-| */news/search* | POST || title |busca as notícias com base no título| não | código 200 e  um JSON com as notícias, ou código 404  | não |
 | */fileNews* | POST ||newsid |envia um arquivo para a notícia(limite de 100mb, é permitido apenas imagens e videos)| sim | código 200 e  um JSON com as informações do arquivo, ou código 400  | não |
 | */fileNews* | GET || |retorna informações sobre todos os arquivos, mas não contém os ids das notícias e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
-| */fileNews/all* | GET || |retorna informações sobre todos os arquivos de notícias e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
 | */fileNews* | DELETE || idfile(remove um arquivo) ou id(remove um link)|deleta um arquivo ou um link do Yt| sim | código 200, ou código 400  | não |
+| */fileNews/all* | GET || |retorna informações sobre todos os arquivos de notícias e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
 | */fileNews/image* | GET || filename|busca uma imagem| não | retorna a imagem, ou código 404  | não |
 | */fileNews/video* | GET || filename|busca um video| não | retorna um video, ou código 404 ou 400  | não |
 | */fileNews/news* | GET || newsid|busca todos os arquivos de uma notícia| não | retorna um json contendos as informações dos arquivos , ou código 404 ou 400  | não |
-| */fileNews/link* | POST || newsid|envia um link do YT para a notícia| sim | retorna um json contendos as informações link , ou código 400  | não |
+| */fileNews/link* | POST || newsid|envia um link do YT para a notícia| sim | retorna um json contendos as informações do link, ou código 400  | não |
+| */post/create* | POST | title, post|  |cria uma postagem| sim | json contendo as informações da postagem e o autor  | não |
+| */post/update* | PUT | title, post|  |atualiza as informações de uma postagem| sim | código 200 ou 400  | não |
+| */post* | GET || postid |retorna a postagem correspondente ao id| não | código 200 e a notícia, ou código 400  | não |
+| */post/show* | GET || page(página a ser buscada, padrão é 1), limite(quantidade de postagens por página, padrão é 10) |retorna todas as postagens| não | código 200 e aspostagens, ou código 400  | não |
+| */post/remove* | POST(irei atualizar para DELETE) || postid |remove uma postagem| sim | código 200 ou código 400  | não |
+| */post/search* | POST || title |busca as postagens com base no título| não | código 200 e  um JSON com as postagens, ou código 404  | não |
+| */filePost* | POST ||postid |envia um arquivo para a postagem(limite de 100mb, é permitido apenas imagens e videos)| sim | código 200 e  um JSON com as informações do arquivo, ou código 400  | não |
+| */filePost* | GET || |retorna informações sobre todos os arquivos, mas não contém os ids das postagens e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
+| */filePost* | DELETE || idfile(remove um arquivo) ou id(remove um link)|deleta um arquivo ou um link do Yt| sim | código 200, ou código 400  | não |
+| */filePost/all* | GET || |retorna informações sobre todos os arquivos de postagens e os links do YT| sim | código 200 e  um JSON com as informações dos arquivo, ou código 400  | não |
+| */filePost/image* | GET || filename|busca uma imagem| não | retorna a imagem, ou código 404  | não |
+| */filePost/video* | GET || filename|busca um video| não | retorna um video, ou código 404 ou 400  | não |
+| */filePost/post* | GET || postid|busca todos os arquivos de uma postagem| não | retorna um json contendos as informações dos arquivos , ou código 404 ou 400  | não |
+| */filePost/link* | POST || postid|envia um link do YT para a postagem| sim | retorna um json contendos as informações do link, ou código 400  | não |
+| */galery* | POST || |envia um arquivo para a galeria| sim | retorna um json contendos as informações do arquivo, ou código 400  | não |
+| */galery* | GET || page(página a ser buscada, padrão é 1), limite(quantidade de postagens por página, padrão é 10)|mostra os arquivos da galeria| sim | retorna um json contendos as informações dos arquivos | não |
+| */galery* | DELETE || idfile|remove um arquivo| sim | código 200 ou 400 | não |
+| */galery/image* | GET || idfile|mostra uma imagem| sim | imagem e código 200, ou 400 | não |
 
 
 
 
+
+## imagem do console da API 
 ![rotasAPI](https://user-images.githubusercontent.com/34286800/68334926-e4705580-00b1-11ea-8ff0-596dd4fd93dc.png)
 
 
