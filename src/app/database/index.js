@@ -1,10 +1,6 @@
 // conexao com o banco de dados
 const mongoose = require('mongoose');
 
-// mongoose.connect('mongodb://matheus:muhnabanco@10.1.21.184/noderest', {
-//     useNewUrlParser: true
-// })
-
 mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true });
 
 mongoose.Promise = global.Promise;
